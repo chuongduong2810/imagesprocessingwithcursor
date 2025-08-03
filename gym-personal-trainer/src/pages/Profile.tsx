@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { UserIcon, SaveIcon } from '@heroicons/react/24/outline';
+import { UserIcon, ScaleIcon } from '@heroicons/react/24/outline';
 import { User } from '../types';
 import { loadUser, saveUser, generateId } from '../utils/storage';
 
@@ -304,7 +304,7 @@ const Profile: React.FC = () => {
                 type="submit"
                 className="btn btn-primary inline-flex items-center"
               >
-                <SaveIcon className="w-4 h-4 mr-2" />
+                <ScaleIcon className="w-4 h-4 mr-2" />
                 Lưu thông tin
               </button>
             </div>

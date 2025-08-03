@@ -34,13 +34,16 @@ const Progress: React.FC = () => {
   }, []);
 
   const formatDate = (date: Date) => {
-    return new Intl.DateTimeFormat('vi-VN', {
+    return date ? new Intl.DateTimeFormat('vi-VN', {
       day: '2-digit',
       month: '2-digit',
-    }).format(date);
+    }).format() : '';
   };
 
   const formatDuration = (minutes: number) => {
+
+    if(!minutes || minutes <= 0) return '0m';
+
     const hours = Math.floor(minutes / 60);
     const mins = minutes % 60;
     if (hours > 0) {
@@ -74,6 +77,8 @@ const Progress: React.FC = () => {
   // Prepare chart data for weight progress
   const getWeightChartData = () => {
     if (!user) return [];
+
+    console.log('Progress entries:', progressEntries);
     
     const weightData = progressEntries
       .filter(entry => entry.weight)
