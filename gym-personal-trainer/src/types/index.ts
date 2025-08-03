@@ -11,16 +11,30 @@ export interface User {
   updatedAt: Date;
 }
 
+// Media types for exercises
+export interface ExerciseMedia {
+  id: string;
+  type: 'image' | 'video' | 'gif';
+  url: string;
+  title?: string;
+  description?: string;
+  thumbnail?: string; // For videos
+  isPrimary?: boolean; // Main media to display
+}
+
 // Exercise types
 export interface Exercise {
   id: string;
   name: string;
   bodyPart: string;
   equipment: string;
-  gifUrl: string;
+  gifUrl: string; // Keep for backward compatibility
   target: string;
   secondaryMuscles: string[];
   instructions: string[];
+  media?: ExerciseMedia[]; // New field for multiple media
+  difficulty?: 'beginner' | 'intermediate' | 'advanced';
+  tips?: string[]; // Additional tips for the exercise
 }
 
 export interface ExerciseSet {

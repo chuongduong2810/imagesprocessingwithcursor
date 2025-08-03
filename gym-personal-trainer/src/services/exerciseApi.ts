@@ -18,6 +18,37 @@ const MOCK_EXERCISES: Exercise[] = [
       'Lower your body until your chest nearly touches the floor.',
       'Push back up to the starting position.',
       'Repeat for desired number of repetitions.'
+    ],
+    difficulty: 'beginner',
+    tips: [
+      'Keep your body in a straight line from head to toe',
+      'Breathe out as you push up, breathe in as you lower down',
+      'Start with knee push-ups if regular push-ups are too difficult'
+    ],
+    media: [
+      {
+        id: 'push-up-gif-1',
+        type: 'gif',
+        url: 'https://i.imgur.com/9FKqH8L.gif',
+        title: 'Push-up Form Demo',
+        description: 'Proper push-up form demonstration',
+        isPrimary: true
+      },
+      {
+        id: 'push-up-img-1',
+        type: 'image',
+        url: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800',
+        title: 'Starting Position',
+        description: 'Proper starting position for push-ups'
+      },
+      {
+        id: 'push-up-video-1',
+        type: 'video',
+        url: 'https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4',
+        title: 'Push-up Tutorial',
+        description: 'Complete tutorial on how to perform push-ups',
+        thumbnail: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400'
+      }
     ]
   },
   {
@@ -33,6 +64,29 @@ const MOCK_EXERCISES: Exercise[] = [
       'Pull yourself up until your chin clears the bar.',
       'Lower yourself back down with control.',
       'Repeat for desired number of repetitions.'
+    ],
+    difficulty: 'intermediate',
+    tips: [
+      'Engage your core throughout the movement',
+      'Use a full range of motion',
+      'Consider using resistance bands for assistance if needed'
+    ],
+    media: [
+      {
+        id: 'pullup-gif-1',
+        type: 'gif',
+        url: 'https://i.imgur.com/example-pullup.gif',
+        title: 'Pull-up Technique',
+        description: 'Proper pull-up form and technique',
+        isPrimary: true
+      },
+      {
+        id: 'pullup-img-1',
+        type: 'image',
+        url: 'https://images.unsplash.com/photo-1594736797933-d0f02d11c2d3?w=800',
+        title: 'Grip Position',
+        description: 'Correct hand position for pull-ups'
+      }
     ]
   },
   {
@@ -48,6 +102,36 @@ const MOCK_EXERCISES: Exercise[] = [
       'Lower your body as if sitting back into a chair.',
       'Keep your knees behind your toes.',
       'Push through your heels to return to starting position.'
+    ],
+    difficulty: 'beginner',
+    tips: [
+      'Keep your chest up and core engaged',
+      'Descend until thighs are parallel to the floor',
+      'Weight should be on your heels, not toes'
+    ],
+    media: [
+      {
+        id: 'squat-gif-1',
+        type: 'gif',
+        url: 'https://i.imgur.com/example-squat.gif',
+        title: 'Squat Movement',
+        description: 'Complete squat movement pattern',
+        isPrimary: true
+      },
+      {
+        id: 'squat-img-1',
+        type: 'image',
+        url: 'https://images.unsplash.com/photo-1566241440091-ec10de8db2e1?w=800',
+        title: 'Bottom Position',
+        description: 'Proper bottom position of the squat'
+      },
+      {
+        id: 'squat-img-2',
+        type: 'image',
+        url: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800',
+        title: 'Starting Stance',
+        description: 'Correct starting stance for squats'
+      }
     ]
   },
   {
@@ -63,6 +147,30 @@ const MOCK_EXERCISES: Exercise[] = [
       'Hold your body in a straight line from head to heels.',
       'Keep your core engaged.',
       'Hold for desired duration.'
+    ],
+    difficulty: 'beginner',
+    tips: [
+      'Don\'t let your hips sag or pike up',
+      'Breathe normally while holding the position',
+      'Start with 30 seconds and gradually increase time'
+    ],
+    media: [
+      {
+        id: 'plank-img-1',
+        type: 'image',
+        url: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800',
+        title: 'Plank Position',
+        description: 'Proper plank form and alignment',
+        isPrimary: true
+      },
+      {
+        id: 'plank-video-1',
+        type: 'video',
+        url: 'https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4',
+        title: 'Plank Tutorial',
+        description: 'Complete guide to planking',
+        thumbnail: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400'
+      }
     ]
   },
   {
@@ -78,6 +186,29 @@ const MOCK_EXERCISES: Exercise[] = [
       'Press weights overhead until arms are fully extended.',
       'Lower back to shoulder height with control.',
       'Repeat for desired number of repetitions.'
+    ],
+    difficulty: 'intermediate',
+    tips: [
+      'Keep your core tight throughout the movement',
+      'Don\'t press the weights together at the top',
+      'Control the descent for maximum benefit'
+    ],
+    media: [
+      {
+        id: 'shoulder-press-gif-1',
+        type: 'gif',
+        url: 'https://i.imgur.com/example-shoulder-press.gif',
+        title: 'Shoulder Press Motion',
+        description: 'Complete shoulder press movement',
+        isPrimary: true
+      },
+      {
+        id: 'shoulder-press-img-1',
+        type: 'image',
+        url: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800',
+        title: 'Starting Position',
+        description: 'Correct starting position with dumbbells'
+      }
     ]
   },
   {
@@ -93,6 +224,37 @@ const MOCK_EXERCISES: Exercise[] = [
       'Curl weights up toward your shoulders.',
       'Keep your elbows stationary.',
       'Lower back down with control.'
+    ],
+    difficulty: 'beginner',
+    tips: [
+      'Don\'t swing the weights - use controlled movement',
+      'Keep elbows close to your body',
+      'Squeeze at the top of the movement'
+    ],
+    media: [
+      {
+        id: 'bicep-curl-gif-1',
+        type: 'gif',
+        url: 'https://i.imgur.com/example-bicep-curl.gif',
+        title: 'Bicep Curl Form',
+        description: 'Proper bicep curl technique',
+        isPrimary: true
+      },
+      {
+        id: 'bicep-curl-img-1',
+        type: 'image',
+        url: 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=800',
+        title: 'Peak Contraction',
+        description: 'Peak contraction position'
+      },
+      {
+        id: 'bicep-curl-video-1',
+        type: 'video',
+        url: 'https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4',
+        title: 'Bicep Curl Variations',
+        description: 'Different types of bicep curls',
+        thumbnail: 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=400'
+      }
     ]
   }
 ];

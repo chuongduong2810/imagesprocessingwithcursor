@@ -4,11 +4,15 @@ import {
   HeartIcon,
   FunnelIcon,
   InformationCircleIcon,
+  StarIcon,
+  ClockIcon,
+  PlusIcon,
 } from '@heroicons/react/24/outline';
-import { HeartIcon as HeartIconSolid } from '@heroicons/react/24/solid';
+import { HeartIcon as HeartIconSolid, StarIcon as StarIconSolid } from '@heroicons/react/24/solid';
 import { Exercise } from '../types';
 import { getExercises, getExercisesByBodyPart, searchExercises } from '../services/exerciseApi';
 import { loadFavoriteExercises, saveFavoriteExercises } from '../utils/storage';
+import MediaViewer from '../components/MediaViewer';
 
 const ExerciseLibrary: React.FC = () => {
   const [exercises, setExercises] = useState<Exercise[]>([]);
@@ -139,13 +143,22 @@ const ExerciseLibrary: React.FC = () => {
             Khám phá {filteredExercises.length} bài tập cho mọi nhóm cơ
           </p>
         </div>
-        <button
-          onClick={() => setShowFilters(!showFilters)}
-          className="btn btn-secondary inline-flex items-center mt-4 sm:mt-0"
-        >
-          <FunnelIcon className="w-4 h-4 mr-2" />
-          Bộ lọc
-        </button>
+        <div className="flex space-x-3 mt-4 sm:mt-0">
+          <button
+            onClick={() => window.location.href = '/exercises/new'}
+            className="btn btn-primary inline-flex items-center"
+          >
+            <PlusIcon className="w-4 h-4 mr-2" />
+            Tạo bài tập
+          </button>
+          <button
+            onClick={() => setShowFilters(!showFilters)}
+            className="btn btn-secondary inline-flex items-center"
+          >
+            <FunnelIcon className="w-4 h-4 mr-2" />
+            Bộ lọc
+          </button>
+        </div>
       </div>
 
       {/* Search and Filters */}
@@ -212,26 +225,64 @@ const ExerciseLibrary: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredExercises.map((exercise) => (
             <div key={exercise.id} className="card overflow-hidden">
-              {/* Exercise Image */}
+              {/* Exercise Media */}
               <div className="aspect-video bg-gray-200 dark:bg-gray-700 relative">
-                <img
-                  src={exercise.gifUrl}
-                  alt={exercise.name}
-                  className="w-full h-full object-cover"
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).src = 'https://via.placeholder.com/400x300?text=Exercise';
-                  }}
-                />
-                <button
-                  onClick={() => toggleFavorite(exercise.id)}
-                  className="absolute top-2 right-2 p-2 bg-white dark:bg-gray-800 rounded-full shadow-lg hover:shadow-xl transition-shadow duration-200"
-                >
-                  {favoriteExercises.includes(exercise.id) ? (
-                    <HeartIconSolid className="h-5 w-5 text-red-500" />
-                  ) : (
-                    <HeartIcon className="h-5 w-5 text-gray-600 dark:text-gray-400" />
+                {exercise.media && exercise.media.length > 0 ? (
+                  <MediaViewer 
+                    media={exercise.media} 
+                    className="w-full h-full"
+                    showControls={false}
+                    autoPlay={false}
+                  />
+                ) : (
+                  <img
+                    src={exercise.gifUrl}
+                    alt={exercise.name}
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = 'https://via.placeholder.com/400x300?text=Exercise';
+                    }}
+                  />
+                )}
+                
+                {/* Action Buttons */}
+                <div className="absolute top-2 right-2 flex space-x-2">
+                  {exercise.difficulty && (
+                    <div className="p-2 bg-white dark:bg-gray-800 rounded-full shadow-lg">
+                      {exercise.difficulty === 'beginner' ? (
+                        <StarIcon className="h-4 w-4 text-green-500" />
+                      ) : exercise.difficulty === 'intermediate' ? (
+                        <div className="flex space-x-1">
+                          <StarIconSolid className="h-4 w-4 text-yellow-500" />
+                          <StarIcon className="h-4 w-4 text-yellow-500" />
+                        </div>
+                      ) : (
+                        <div className="flex space-x-1">
+                          <StarIconSolid className="h-4 w-4 text-red-500" />
+                          <StarIconSolid className="h-4 w-4 text-red-500" />
+                          <StarIconSolid className="h-4 w-4 text-red-500" />
+                        </div>
+                      )}
+                    </div>
                   )}
-                </button>
+                  <button
+                    onClick={() => toggleFavorite(exercise.id)}
+                    className="p-2 bg-white dark:bg-gray-800 rounded-full shadow-lg hover:shadow-xl transition-shadow duration-200"
+                  >
+                    {favoriteExercises.includes(exercise.id) ? (
+                      <HeartIconSolid className="h-5 w-5 text-red-500" />
+                    ) : (
+                      <HeartIcon className="h-5 w-5 text-gray-600 dark:text-gray-400" />
+                    )}
+                  </button>
+                </div>
+                
+                {/* Media Count Badge */}
+                {exercise.media && exercise.media.length > 1 && (
+                  <div className="absolute bottom-2 left-2 bg-black bg-opacity-50 text-white text-xs px-2 py-1 rounded">
+                    {exercise.media.length} media
+                  </div>
+                )}
               </div>
 
               {/* Exercise Info */}
@@ -259,6 +310,21 @@ const ExerciseLibrary: React.FC = () => {
                       {exercise.target}
                     </span>
                   </div>
+                  {exercise.difficulty && (
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-gray-600 dark:text-gray-400">Độ khó:</span>
+                      <span className={`font-medium px-2 py-1 rounded text-xs ${
+                        exercise.difficulty === 'beginner' 
+                          ? 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400'
+                          : exercise.difficulty === 'intermediate'
+                          ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400'
+                          : 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400'
+                      }`}>
+                        {exercise.difficulty === 'beginner' ? 'Cơ bản' : 
+                         exercise.difficulty === 'intermediate' ? 'Trung bình' : 'Nâng cao'}
+                      </span>
+                    </div>
+                  )}
                 </div>
 
                 <button
@@ -308,15 +374,24 @@ const ExerciseLibrary: React.FC = () => {
                 </button>
               </div>
 
-              <div className="aspect-video bg-gray-200 dark:bg-gray-700 rounded-lg mb-6">
-                <img
-                  src={selectedExercise.gifUrl}
-                  alt={selectedExercise.name}
-                  className="w-full h-full object-cover rounded-lg"
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).src = 'https://via.placeholder.com/400x300?text=Exercise';
-                  }}
-                />
+              <div className="aspect-video bg-gray-200 dark:bg-gray-700 rounded-lg mb-6 overflow-hidden">
+                {selectedExercise.media && selectedExercise.media.length > 0 ? (
+                  <MediaViewer 
+                    media={selectedExercise.media} 
+                    className="w-full h-full"
+                    showControls={true}
+                    autoPlay={false}
+                  />
+                ) : (
+                  <img
+                    src={selectedExercise.gifUrl}
+                    alt={selectedExercise.name}
+                    className="w-full h-full object-cover rounded-lg"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = 'https://via.placeholder.com/400x300?text=Exercise';
+                    }}
+                  />
+                )}
               </div>
 
               <div className="grid grid-cols-2 gap-4 mb-6">
@@ -341,6 +416,21 @@ const ExerciseLibrary: React.FC = () => {
                         {selectedExercise.target}
                       </span>
                     </div>
+                    {selectedExercise.difficulty && (
+                      <div>
+                        <span className="text-gray-600 dark:text-gray-400">Độ khó: </span>
+                        <span className={`font-medium px-2 py-1 rounded text-xs ${
+                          selectedExercise.difficulty === 'beginner' 
+                            ? 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400'
+                            : selectedExercise.difficulty === 'intermediate'
+                            ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400'
+                            : 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400'
+                        }`}>
+                          {selectedExercise.difficulty === 'beginner' ? 'Cơ bản' : 
+                           selectedExercise.difficulty === 'intermediate' ? 'Trung bình' : 'Nâng cao'}
+                        </span>
+                      </div>
+                    )}
                   </div>
                 </div>
 
@@ -362,13 +452,27 @@ const ExerciseLibrary: React.FC = () => {
               </div>
 
               {selectedExercise.instructions.length > 0 && (
-                <div>
+                <div className="mb-6">
                   <h3 className="font-medium text-gray-900 dark:text-white mb-3">Hướng dẫn</h3>
                   <ol className="list-decimal list-inside space-y-2 text-sm text-gray-600 dark:text-gray-400">
                     {selectedExercise.instructions.map((instruction, index) => (
                       <li key={index}>{instruction}</li>
                     ))}
                   </ol>
+                </div>
+              )}
+
+              {selectedExercise.tips && selectedExercise.tips.length > 0 && (
+                <div className="mb-6">
+                  <h3 className="font-medium text-gray-900 dark:text-white mb-3">Mẹo thực hiện</h3>
+                  <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+                    {selectedExercise.tips.map((tip, index) => (
+                      <li key={index} className="flex items-start">
+                        <div className="w-2 h-2 bg-primary-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                        <span>{tip}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               )}
 
