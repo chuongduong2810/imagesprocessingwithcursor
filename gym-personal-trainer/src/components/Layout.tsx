@@ -4,6 +4,7 @@ import { useTheme } from '../context/ThemeContext';
 import {
   HomeIcon,
   BookOpenIcon,
+  DocumentTextIcon,
   CalendarDaysIcon,
   ChartBarIcon,
   UserIcon,
@@ -25,6 +26,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const navigation = [
     { name: 'Dashboard', href: '/dashboard', icon: HomeIcon },
     { name: 'Thư viện bài tập', href: '/exercises', icon: BookOpenIcon },
+    { name: 'Quản lý bài tập', href: '/assignments', icon: DocumentTextIcon },
     { name: 'Lên lịch tập', href: '/workouts', icon: CalendarDaysIcon },
     { name: 'Tiến độ', href: '/progress', icon: ChartBarIcon },
     { name: 'Hồ sơ', href: '/profile', icon: UserIcon },

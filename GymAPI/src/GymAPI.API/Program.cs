@@ -56,6 +56,9 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseCors();
 
+// Enable serving static files for uploaded media
+app.UseStaticFiles();
+
 app.UseAuthorization();
 
 app.MapControllers();
