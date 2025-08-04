@@ -17,6 +17,10 @@ public class GymDbContext : DbContext
     public DbSet<WorkoutSession> WorkoutSessions { get; set; }
     public DbSet<Exercise> Exercises { get; set; }
     public DbSet<Booking> Bookings { get; set; }
+    public DbSet<Assignment> Assignments { get; set; }
+    public DbSet<AssignmentMedia> AssignmentMedia { get; set; }
+    public DbSet<AssignmentSubmission> AssignmentSubmissions { get; set; }
+    public DbSet<SubmissionMedia> SubmissionMedia { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -34,6 +38,10 @@ public class GymDbContext : DbContext
         modelBuilder.Entity<WorkoutSession>().HasQueryFilter(e => !e.IsDeleted);
         modelBuilder.Entity<Exercise>().HasQueryFilter(e => !e.IsDeleted);
         modelBuilder.Entity<Booking>().HasQueryFilter(e => !e.IsDeleted);
+        modelBuilder.Entity<Assignment>().HasQueryFilter(e => !e.IsDeleted);
+        modelBuilder.Entity<AssignmentMedia>().HasQueryFilter(e => !e.IsDeleted);
+        modelBuilder.Entity<AssignmentSubmission>().HasQueryFilter(e => !e.IsDeleted);
+        modelBuilder.Entity<SubmissionMedia>().HasQueryFilter(e => !e.IsDeleted);
     }
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

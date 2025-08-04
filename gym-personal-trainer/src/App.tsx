@@ -7,6 +7,8 @@ import ExerciseLibrary from './pages/ExerciseLibrary';
 import WorkoutPlanner from './pages/WorkoutPlanner';
 import Progress from './pages/Progress';
 import Profile from './pages/Profile';
+import AssignmentList from './pages/AssignmentList';
+import AssignmentCreate from './pages/AssignmentCreate';
 
 function App() {
   return (
@@ -18,6 +20,8 @@ function App() {
               <Route path="/" element={<Dashboard />} />
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/exercises" element={<ExerciseLibrary />} />
+              <Route path="/assignments" element={<AssignmentList />} />
+              <Route path="/assignments/create" element={<AssignmentCreate />} />
               <Route path="/workouts" element={<WorkoutPlanner />} />
               <Route path="/progress" element={<Progress />} />
               <Route path="/profile" element={<Profile />} />

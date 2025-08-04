@@ -1,0 +1,122 @@
+using GymAPI.Application.Common.DTOs;
+using GymAPI.Application.Common.Models;
+using GymAPI.Domain.Entities;
+using GymAPI.Infrastructure.Data;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
+
+namespace GymAPI.Application.Features.Assignments.Commands.CreateAssignment;
+
+public class CreateAssignmentCommandHandler : IRequestHandler<CreateAssignmentCommand, Result<AssignmentDto>>
+{
+    private readonly GymDbContext _context;
+
+    public CreateAssignmentCommandHandler(GymDbContext context)
+    {
+        _context = context;
+    }
+
+    public async Task<Result<AssignmentDto>> Handle(CreateAssignmentCommand request, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var dto = request.Assignment;
+
+            // Verify trainer exists
+            var trainer = await _context.Trainers
+                .FirstOrDefaultAsync(t => t.Id == dto.TrainerId, cancellationToken);
+
+            if (trainer == null)
+            {
+                return Result<AssignmentDto>.Failure("Trainer not found");
+            }
+
+            // Verify member exists if specified
+            Member? member = null;
+            if (dto.MemberId.HasValue)
+            {
+                member = await _context.Members
+                    .FirstOrDefaultAsync(m => m.Id == dto.MemberId.Value, cancellationToken);
+
+                if (member == null)
+                {
+                    return Result<AssignmentDto>.Failure("Member not found");
+                }
+            }
+
+            var assignment = new Assignment
+            {
+                Id = Guid.NewGuid(),
+                Title = dto.Title,
+                Description = dto.Description,
+                TrainerId = dto.TrainerId,
+                MemberId = dto.MemberId,
+                DueDate = dto.DueDate,
+                Type = dto.Type,
+                Instructions = dto.Instructions,
+                Points = dto.Points,
+                IsPublic = dto.IsPublic
+            };
+
+            _context.Assignments.Add(assignment);
+            await _context.SaveChangesAsync(cancellationToken);
+
+            // Reload with navigation properties
+            var createdAssignment = await _context.Assignments
+                .Include(a => a.Trainer)
+                .Include(a => a.Member)
+                .Include(a => a.Media)
+                .Include(a => a.Submissions)
+                .FirstOrDefaultAsync(a => a.Id == assignment.Id, cancellationToken);
+
+            var assignmentDto = new AssignmentDto(
+                createdAssignment!.Id,
+                createdAssignment.Title,
+                createdAssignment.Description,
+                createdAssignment.TrainerId,
+                $"{createdAssignment.Trainer.FirstName} {createdAssignment.Trainer.LastName}",
+                createdAssignment.MemberId,
+                createdAssignment.Member != null ? $"{createdAssignment.Member.FirstName} {createdAssignment.Member.LastName}" : null,
+                createdAssignment.DueDate,
+                createdAssignment.Status,
+                createdAssignment.Type,
+                createdAssignment.Instructions,
+                createdAssignment.Points,
+                createdAssignment.IsPublic,
+                createdAssignment.CreatedAt,
+                createdAssignment.UpdatedAt,
+                createdAssignment.Media.Select(m => new AssignmentMediaDto(
+                    m.Id,
+                    m.FileName,
+                    m.OriginalFileName,
+                    m.ContentType,
+                    m.FilePath,
+                    m.FileSize,
+                    m.MediaType,
+                    m.ThumbnailPath,
+                    m.Description,
+                    m.SortOrder
+                )),
+                createdAssignment.Submissions.Select(s => new AssignmentSubmissionDto(
+                    s.Id,
+                    s.AssignmentId,
+                    s.MemberId,
+                    "",
+                    s.Content,
+                    s.SubmittedAt,
+                    s.Status,
+                    s.Score,
+                    s.FeedbackFromTrainer,
+                    s.ReviewedAt,
+                    Enumerable.Empty<SubmissionMediaDto>()
+                ))
+            );
+
+            return Result<AssignmentDto>.Success(assignmentDto);
+        }
+        catch (Exception ex)
+        {
+            return Result<AssignmentDto>.Failure(ex.Message);
+        }
+    }
+}

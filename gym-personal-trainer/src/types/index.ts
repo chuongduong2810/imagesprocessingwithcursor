@@ -160,3 +160,86 @@ export interface WorkoutContextType {
   deleteWorkout: (id: string) => void;
   setCurrentWorkout: (workout: Workout | null) => void;
 }
+
+// Assignment types
+export interface Assignment {
+  id: string;
+  title: string;
+  description: string;
+  trainerId: string;
+  trainerName: string;
+  memberId?: string;
+  memberName?: string;
+  dueDate: Date;
+  status: AssignmentStatus;
+  type: AssignmentType;
+  instructions: string;
+  points: number;
+  isPublic: boolean;
+  createdAt: Date;
+  updatedAt?: Date;
+  media: AssignmentMedia[];
+  submissions: AssignmentSubmission[];
+}
+
+export interface AssignmentMedia {
+  id: string;
+  fileName: string;
+  originalFileName: string;
+  contentType: string;
+  filePath: string;
+  fileSize: number;
+  mediaType: MediaType;
+  thumbnailPath?: string;
+  description?: string;
+  sortOrder: number;
+}
+
+export interface AssignmentSubmission {
+  id: string;
+  assignmentId: string;
+  memberId: string;
+  memberName: string;
+  content: string;
+  submittedAt: Date;
+  status: SubmissionStatus;
+  score?: number;
+  feedbackFromTrainer?: string;
+  reviewedAt?: Date;
+  media: SubmissionMedia[];
+}
+
+export interface SubmissionMedia {
+  id: string;
+  fileName: string;
+  originalFileName: string;
+  contentType: string;
+  filePath: string;
+  fileSize: number;
+  mediaType: MediaType;
+  thumbnailPath?: string;
+  description?: string;
+}
+
+export interface CreateAssignmentData {
+  title: string;
+  description: string;
+  trainerId: string;
+  memberId?: string;
+  dueDate: Date;
+  type: AssignmentType;
+  instructions: string;
+  points: number;
+  isPublic: boolean;
+}
+
+export interface CreateSubmissionData {
+  assignmentId: string;
+  memberId: string;
+  content: string;
+}
+
+export type AssignmentStatus = 'Active' | 'Completed' | 'Expired' | 'Cancelled';
+export type AssignmentType = 'Exercise' | 'Diet' | 'Reading' | 'Video' | 'General';
+export type MediaType = 'Image' | 'Video' | 'Gif' | 'Document' | 'Audio';
+export type SubmissionStatus = 'Submitted' | 'UnderReview' | 'Approved' | 'NeedsRevision' | 'Rejected';
