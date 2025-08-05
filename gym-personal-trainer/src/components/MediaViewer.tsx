@@ -1,13 +1,13 @@
+import {
+  ArrowLeftIcon,
+  ArrowRightIcon,
+  PauseIcon,
+  PlayIcon,
+  SpeakerWaveIcon,
+  SpeakerXMarkIcon
+} from '@heroicons/react/24/outline';
 import React, { useState } from 'react';
 import { ExerciseMedia } from '../types';
-import { 
-  PlayIcon, 
-  PauseIcon, 
-  SpeakerWaveIcon, 
-  SpeakerXMarkIcon,
-  ArrowLeftIcon,
-  ArrowRightIcon
-} from '@heroicons/react/24/outline';
 
 interface MediaViewerProps {
   media: ExerciseMedia[];
@@ -81,7 +81,7 @@ export const MediaViewer: React.FC<MediaViewerProps> = ({
             alt={currentMedia.title || 'Exercise GIF'}
             className="w-full h-full object-cover"
             onError={(e) => {
-              (e.target as HTMLImageElement).src = 'https://via.placeholder.com/400x300?text=GIF+Error';
+              (e.target as HTMLImageElement).src = 'https://placehold.co/600x400';
             }}
           />
         );
@@ -94,7 +94,7 @@ export const MediaViewer: React.FC<MediaViewerProps> = ({
             alt={currentMedia.title || 'Exercise Image'}
             className="w-full h-full object-cover"
             onError={(e) => {
-              (e.target as HTMLImageElement).src = 'https://via.placeholder.com/400x300?text=Image+Error';
+              (e.target as HTMLImageElement).src = 'https://placehold.co/600x400';
             }}
           />
         );
@@ -182,7 +182,7 @@ export const MediaViewer: React.FC<MediaViewerProps> = ({
                 alt={item.title || `Media ${index + 1}`}
                 className="w-full h-full object-cover"
                 onError={(e) => {
-                  (e.target as HTMLImageElement).src = 'https://via.placeholder.com/64x64?text=' + item.type.toUpperCase();
+                  (e.target as HTMLImageElement).src = 'https://placehold.co/600x400';
                 }}
               />
             </button>

@@ -1,19 +1,19 @@
-import React, { useState } from 'react';
-import { ExerciseMedia } from '../types';
-import MediaViewer from './MediaViewer';
-import MediaUpload from './MediaUpload';
 import {
-  PlusIcon,
-  PencilIcon,
-  TrashIcon,
-  ArrowUpIcon,
   ArrowDownIcon,
+  ArrowUpIcon,
+  CheckIcon,
   EyeIcon,
+  PencilIcon,
+  PlusIcon,
   StarIcon,
-  XMarkIcon,
-  CheckIcon
+  TrashIcon,
+  XMarkIcon
 } from '@heroicons/react/24/outline';
 import { StarIcon as StarIconSolid } from '@heroicons/react/24/solid';
+import React, { useState } from 'react';
+import { ExerciseMedia } from '../types';
+import MediaUpload from './MediaUpload';
+import MediaViewer from './MediaViewer';
 
 interface MediaManagerProps {
   media: ExerciseMedia[];
@@ -155,7 +155,7 @@ export const MediaManager: React.FC<MediaManagerProps> = ({
                     alt={mediaItem.title || 'Media'}
                     className="w-full h-full object-cover"
                     onError={(e) => {
-                      (e.target as HTMLImageElement).src = `https://via.placeholder.com/96x96?text=${mediaItem.type.toUpperCase()}`;
+                      (e.target as HTMLImageElement).src = `https://placehold.co/600x400`;
                     }}
                   />
                 </div>

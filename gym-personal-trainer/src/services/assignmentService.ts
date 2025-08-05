@@ -1,6 +1,6 @@
-import { Assignment, CreateAssignmentData, CreateSubmissionData, AssignmentSubmission } from '../types';
+import { Assignment, AssignmentSubmission, CreateAssignmentData, CreateSubmissionData } from '../types';
 
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://localhost:7266/api';
 
 export class AssignmentService {
   // Get all assignments with optional filters

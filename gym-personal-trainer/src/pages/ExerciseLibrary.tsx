@@ -1,18 +1,17 @@
-import React, { useState, useEffect } from 'react';
 import {
-  MagnifyingGlassIcon,
-  HeartIcon,
   FunnelIcon,
+  HeartIcon,
   InformationCircleIcon,
-  StarIcon,
-  ClockIcon,
+  MagnifyingGlassIcon,
   PlusIcon,
+  StarIcon
 } from '@heroicons/react/24/outline';
 import { HeartIcon as HeartIconSolid, StarIcon as StarIconSolid } from '@heroicons/react/24/solid';
-import { Exercise } from '../types';
-import { getExercises, getExercisesByBodyPart, searchExercises } from '../services/exerciseApi';
-import { loadFavoriteExercises, saveFavoriteExercises } from '../utils/storage';
+import React, { useEffect, useState } from 'react';
 import MediaViewer from '../components/MediaViewer';
+import { getExercises, searchExercises } from '../services/exerciseApi';
+import { Exercise } from '../types';
+import { loadFavoriteExercises, saveFavoriteExercises } from '../utils/storage';
 
 const ExerciseLibrary: React.FC = () => {
   const [exercises, setExercises] = useState<Exercise[]>([]);
@@ -240,7 +239,7 @@ const ExerciseLibrary: React.FC = () => {
                     alt={exercise.name}
                     className="w-full h-full object-cover"
                     onError={(e) => {
-                      (e.target as HTMLImageElement).src = 'https://via.placeholder.com/400x300?text=Exercise';
+                      (e.target as HTMLImageElement).src = 'https://placehold.co/600x400';
                     }}
                   />
                 )}
@@ -388,7 +387,7 @@ const ExerciseLibrary: React.FC = () => {
                     alt={selectedExercise.name}
                     className="w-full h-full object-cover rounded-lg"
                     onError={(e) => {
-                      (e.target as HTMLImageElement).src = 'https://via.placeholder.com/400x300?text=Exercise';
+                      (e.target as HTMLImageElement).src = 'https://placehold.co/600x400';
                     }}
                   />
                 )}
