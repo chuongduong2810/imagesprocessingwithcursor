@@ -243,3 +243,30 @@ export type AssignmentStatus = 'Active' | 'Completed' | 'Expired' | 'Cancelled';
 export type AssignmentType = 'Exercise' | 'Diet' | 'Reading' | 'Video' | 'General';
 export type MediaType = 'Image' | 'Video' | 'Gif' | 'Document' | 'Audio';
 export type SubmissionStatus = 'Submitted' | 'UnderReview' | 'Approved' | 'NeedsRevision' | 'Rejected';
+
+// Gemini AI Workout Suggestion types
+export interface WorkoutSuggestionRequest {
+  gender: 'Male' | 'Female';
+  age: number; // 10-100
+  weight: number; // kg (30-300)
+  height: number; // cm (100-250)
+  goal: 'Gain Muscle' | 'Lose Fat' | 'Maintain';
+  workoutDaysPerWeek: number; // 1-7
+  equipment: string;
+  additionalNotes?: string;
+}
+
+export interface WorkoutSuggestionResponse {
+  weeklyPlan: {
+    Monday: string[];
+    Tuesday: string[];
+    Wednesday: string[];
+    Thursday: string[];
+    Friday: string[];
+    Saturday: string[];
+    Sunday: string[];
+  };
+  additionalTips: string;
+  isSuccess: boolean;
+  errorMessage: string | null;
+}

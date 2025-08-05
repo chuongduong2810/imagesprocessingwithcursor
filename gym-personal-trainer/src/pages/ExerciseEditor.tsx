@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { 
   ArrowLeftIcon, 
-  SaveIcon, 
+  BookmarkIcon, 
   EyeIcon,
   PlusIcon,
   MinusIcon
@@ -242,7 +242,7 @@ const ExerciseEditor: React.FC = () => {
             disabled={isSaving}
             className="btn btn-primary inline-flex items-center"
           >
-            <SaveIcon className="w-4 h-4 mr-2" />
+            <BookmarkIcon className="w-4 h-4 mr-2" />
             {isSaving ? 'Đang lưu...' : 'Lưu bài tập'}
           </button>
         </div>
