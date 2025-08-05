@@ -46,71 +46,71 @@ public class AssignmentsController : BaseApiController
         return BadRequest(result.Error);
     }
 
-    [HttpPost("{assignmentId}/media")]
-    public async Task<IActionResult> UploadAssignmentMedia(Guid assignmentId, [FromForm] IFormFile file, [FromForm] string? description = null)
-    {
-        try
-        {
-            if (file == null || file.Length == 0)
-            {
-                return BadRequest("No file provided");
-            }
+    //[HttpPost("{assignmentId}/media")]
+    //public async Task<IActionResult> UploadAssignmentMedia(Guid assignmentId, [FromForm] IFormFile file, [FromForm] string? description = null)
+    //{
+    //    try
+    //    {
+    //        if (file == null || file.Length == 0)
+    //        {
+    //            return BadRequest("No file provided");
+    //        }
 
-            // Check file size (limit to 50MB)
-            if (file.Length > 50 * 1024 * 1024)
-            {
-                return BadRequest("File size too large. Maximum size is 50MB.");
-            }
+    //        // Check file size (limit to 50MB)
+    //        if (file.Length > 50 * 1024 * 1024)
+    //        {
+    //            return BadRequest("File size too large. Maximum size is 50MB.");
+    //        }
 
-            // Create uploads directory if it doesn't exist
-            var uploadsPath = Path.Combine("wwwroot", "uploads", "assignments");
-            Directory.CreateDirectory(uploadsPath);
+    //        // Create uploads directory if it doesn't exist
+    //        var uploadsPath = Path.Combine("wwwroot", "uploads", "assignments");
+    //        Directory.CreateDirectory(uploadsPath);
 
-            // Generate unique filename
-            var fileExtension = Path.GetExtension(file.FileName);
-            var fileName = $"{Guid.NewGuid()}{fileExtension}";
-            var filePath = Path.Combine(uploadsPath, fileName);
+    //        // Generate unique filename
+    //        var fileExtension = Path.GetExtension(file.FileName);
+    //        var fileName = $"{Guid.NewGuid()}{fileExtension}";
+    //        var filePath = Path.Combine(uploadsPath, fileName);
 
-            // Save file
-            using (var stream = new FileStream(filePath, FileMode.Create))
-            {
-                await file.CopyToAsync(stream);
-            }
+    //        // Save file
+    //        using (var stream = new FileStream(filePath, FileMode.Create))
+    //        {
+    //            await file.CopyToAsync(stream);
+    //        }
 
-            // Determine media type
-            var mediaType = GetMediaTypeFromContentType(file.ContentType);
+    //        // Determine media type
+    //        var mediaType = GetMediaTypeFromContentType(file.ContentType);
 
-            // Create thumbnail for images
-            string? thumbnailPath = null;
-            if (mediaType == Domain.ValueObjects.MediaType.Image)
-            {
-                // TODO: Implement thumbnail generation
-            }
+    //        // Create thumbnail for images
+    //        string? thumbnailPath = null;
+    //        if (mediaType == Domain.ValueObjects.MediaType.Image)
+    //        {
+    //            // TODO: Implement thumbnail generation
+    //        }
 
-            var createMediaDto = new CreateAssignmentMediaDto(
-                assignmentId,
-                fileName,
-                file.FileName,
-                file.ContentType,
-                $"/uploads/assignments/{fileName}",
-                file.Length,
-                mediaType,
-                thumbnailPath,
-                description,
-                0
-            );
+    //        var createMediaDto = new CreateAssignmentMediaDto(
+    //            assignmentId,
+    //            fileName,
+    //            file.FileName,
+    //            file.ContentType,
+    //            $"/uploads/assignments/{fileName}",
+    //            file.Length,
+    //            mediaType,
+    //            thumbnailPath,
+    //            description,
+    //            0
+    //        );
 
-            // TODO: Create command handler for adding media
-            // var command = new CreateAssignmentMediaCommand(createMediaDto);
-            // var result = await Mediator.Send(command);
+    //        // TODO: Create command handler for adding media
+    //        // var command = new CreateAssignmentMediaCommand(createMediaDto);
+    //        // var result = await Mediator.Send(command);
 
-            return Ok(new { message = "File uploaded successfully", fileName, filePath = $"/uploads/assignments/{fileName}" });
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, $"Internal server error: {ex.Message}");
-        }
-    }
+    //        return Ok(new { message = "File uploaded successfully", fileName, filePath = $"/uploads/assignments/{fileName}" });
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        return StatusCode(500, $"Internal server error: {ex.Message}");
+    //    }
+    //}
 
     private static Domain.ValueObjects.MediaType GetMediaTypeFromContentType(string contentType)
     {
