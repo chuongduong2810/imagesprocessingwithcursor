@@ -1,19 +1,18 @@
 using GymAPI.Application.Common.DTOs;
 using GymAPI.Application.Common.Models;
 using GymAPI.Domain.Entities;
-using GymAPI.Infrastructure.Data;
+using GymAPI.Domain.Interfaces;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace GymAPI.Application.Features.Assignments.Commands.CreateAssignment;
 
 public class CreateAssignmentCommandHandler : IRequestHandler<CreateAssignmentCommand, Result<AssignmentDto>>
 {
-    private readonly GymDbContext _context;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public CreateAssignmentCommandHandler(GymDbContext context)
+    public CreateAssignmentCommandHandler(IUnitOfWork unitOfWork)
     {
-        _context = context;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<Result<AssignmentDto>> Handle(CreateAssignmentCommand request, CancellationToken cancellationToken)
@@ -23,9 +22,7 @@ public class CreateAssignmentCommandHandler : IRequestHandler<CreateAssignmentCo
             var dto = request.Assignment;
 
             // Verify trainer exists
-            var trainer = await _context.Trainers
-                .FirstOrDefaultAsync(t => t.Id == dto.TrainerId, cancellationToken);
-
+            var trainer = await _unitOfWork.Trainers.GetByIdAsync(dto.TrainerId, cancellationToken);
             if (trainer == null)
             {
                 return Result<AssignmentDto>.Failure("Trainer not found");
@@ -35,9 +32,7 @@ public class CreateAssignmentCommandHandler : IRequestHandler<CreateAssignmentCo
             Member? member = null;
             if (dto.MemberId.HasValue)
             {
-                member = await _context.Members
-                    .FirstOrDefaultAsync(m => m.Id == dto.MemberId.Value, cancellationToken);
-
+                member = await _unitOfWork.Members.GetByIdAsync(dto.MemberId.Value, cancellationToken);
                 if (member == null)
                 {
                     return Result<AssignmentDto>.Failure("Member not found");
@@ -58,16 +53,11 @@ public class CreateAssignmentCommandHandler : IRequestHandler<CreateAssignmentCo
                 IsPublic = dto.IsPublic
             };
 
-            _context.Assignments.Add(assignment);
-            await _context.SaveChangesAsync(cancellationToken);
+            await _unitOfWork.Assignments.AddAsync(assignment, cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             // Reload with navigation properties
-            var createdAssignment = await _context.Assignments
-                .Include(a => a.Trainer)
-                .Include(a => a.Member)
-                .Include(a => a.Media)
-                .Include(a => a.Submissions)
-                .FirstOrDefaultAsync(a => a.Id == assignment.Id, cancellationToken);
+            var createdAssignment = await _unitOfWork.Assignments.GetByIdWithIncludesAsync(assignment.Id, cancellationToken);
 
             var assignmentDto = new AssignmentDto(
                 createdAssignment!.Id,

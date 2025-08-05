@@ -5,6 +5,7 @@ public interface IUnitOfWork : IDisposable
     IMemberRepository Members { get; }
     ITrainerRepository Trainers { get; }
     IEquipmentRepository Equipment { get; }
+    IAssignmentRepository Assignments { get; }
     IRepository<Entities.Membership> Memberships { get; }
     IRepository<Entities.MembershipPlan> MembershipPlans { get; }
     IRepository<Entities.WorkoutSession> WorkoutSessions { get; }

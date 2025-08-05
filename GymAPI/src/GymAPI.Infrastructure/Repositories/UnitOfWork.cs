@@ -16,6 +16,7 @@ public class UnitOfWork : IUnitOfWork
         Members = new MemberRepository(_context);
         Trainers = new TrainerRepository(_context);
         Equipment = new EquipmentRepository(_context);
+        Assignments = new AssignmentRepository(_context);
         Memberships = new Repository<Membership>(_context);
         MembershipPlans = new Repository<MembershipPlan>(_context);
         WorkoutSessions = new Repository<WorkoutSession>(_context);
@@ -26,6 +27,7 @@ public class UnitOfWork : IUnitOfWork
     public IMemberRepository Members { get; }
     public ITrainerRepository Trainers { get; }
     public IEquipmentRepository Equipment { get; }
+    public IAssignmentRepository Assignments { get; }
     public IRepository<Membership> Memberships { get; }
     public IRepository<MembershipPlan> MembershipPlans { get; }
     public IRepository<WorkoutSession> WorkoutSessions { get; }

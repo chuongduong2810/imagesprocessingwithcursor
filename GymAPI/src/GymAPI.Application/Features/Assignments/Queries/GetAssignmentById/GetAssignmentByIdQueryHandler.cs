@@ -1,33 +1,24 @@
 using GymAPI.Application.Common.DTOs;
 using GymAPI.Application.Common.Models;
-using GymAPI.Infrastructure.Data;
+using GymAPI.Domain.Interfaces;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace GymAPI.Application.Features.Assignments.Queries.GetAssignmentById;
 
 public class GetAssignmentByIdQueryHandler : IRequestHandler<GetAssignmentByIdQuery, Result<AssignmentDto>>
 {
-    private readonly GymDbContext _context;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public GetAssignmentByIdQueryHandler(GymDbContext context)
+    public GetAssignmentByIdQueryHandler(IUnitOfWork unitOfWork)
     {
-        _context = context;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<Result<AssignmentDto>> Handle(GetAssignmentByIdQuery request, CancellationToken cancellationToken)
     {
         try
         {
-            var assignment = await _context.Assignments
-                .Include(a => a.Trainer)
-                .Include(a => a.Member)
-                .Include(a => a.Media)
-                .Include(a => a.Submissions)
-                .ThenInclude(s => s.Member)
-                .Include(a => a.Submissions)
-                .ThenInclude(s => s.Media)
-                .FirstOrDefaultAsync(a => a.Id == request.Id, cancellationToken);
+            var assignment = await _unitOfWork.Assignments.GetByIdWithIncludesAsync(request.Id, cancellationToken);
 
             if (assignment == null)
             {
