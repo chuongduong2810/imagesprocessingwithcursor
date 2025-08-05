@@ -4,10 +4,15 @@ import {
   CalendarDaysIcon,
   ClockIcon,
   FireIcon,
+  SparklesIcon,
 } from '@heroicons/react/24/outline';
+import WorkoutSuggestionForm from '../components/WorkoutSuggestionForm';
+import WorkoutSuggestionDisplay from '../components/WorkoutSuggestionDisplay';
+import { WorkoutSuggestionResponse } from '../types';
 
 const WorkoutPlanner: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'plans' | 'create'>('plans');
+  const [activeTab, setActiveTab] = useState<'plans' | 'create' | 'ai-suggestions'>('plans');
+  const [aiSuggestion, setAiSuggestion] = useState<WorkoutSuggestionResponse | null>(null);
 
   return (
     <div className="space-y-6">
@@ -21,13 +26,22 @@ const WorkoutPlanner: React.FC = () => {
             Tạo và quản lý kế hoạch tập luyện của bạn
           </p>
         </div>
-        <button
-          onClick={() => setActiveTab('create')}
-          className="btn btn-primary inline-flex items-center mt-4 sm:mt-0"
-        >
-          <PlusIcon className="w-4 h-4 mr-2" />
-          Tạo lịch tập mới
-        </button>
+        <div className="flex space-x-3 mt-4 sm:mt-0">
+          <button
+            onClick={() => setActiveTab('ai-suggestions')}
+            className="btn btn-primary inline-flex items-center"
+          >
+            <SparklesIcon className="w-4 h-4 mr-2" />
+            AI Suggestions
+          </button>
+          <button
+            onClick={() => setActiveTab('create')}
+            className="btn btn-secondary inline-flex items-center"
+          >
+            <PlusIcon className="w-4 h-4 mr-2" />
+            Tạo lịch tập mới
+          </button>
+        </div>
       </div>
 
       {/* Tabs */}
@@ -42,6 +56,17 @@ const WorkoutPlanner: React.FC = () => {
             }`}
           >
             Kế hoạch của tôi
+          </button>
+          <button
+            onClick={() => setActiveTab('ai-suggestions')}
+            className={`py-2 px-1 border-b-2 font-medium text-sm ${
+              activeTab === 'ai-suggestions'
+                ? 'border-primary-500 text-primary-600 dark:text-primary-400'
+                : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300'
+            }`}
+          >
+            <SparklesIcon className="w-4 h-4 inline mr-1" />
+            AI Suggestions
           </button>
           <button
             onClick={() => setActiveTab('create')}
@@ -68,16 +93,38 @@ const WorkoutPlanner: React.FC = () => {
               Chưa có kế hoạch tập luyện
             </h3>
             <p className="text-gray-600 dark:text-gray-400 mb-4">
-              Bắt đầu tạo kế hoạch tập luyện đầu tiên của bạn
+              Bắt đầu tạo kế hoạch tập luyện đầu tiên của bạn hoặc thử tính năng AI Suggestions
             </p>
-            <button
-              onClick={() => setActiveTab('create')}
-              className="btn btn-primary inline-flex items-center"
-            >
-              <PlusIcon className="w-4 h-4 mr-2" />
-              Tạo kế hoạch mới
-            </button>
+            <div className="flex justify-center space-x-4">
+              <button
+                onClick={() => setActiveTab('ai-suggestions')}
+                className="btn btn-primary inline-flex items-center"
+              >
+                <SparklesIcon className="w-4 h-4 mr-2" />
+                Thử AI Suggestions
+              </button>
+              <button
+                onClick={() => setActiveTab('create')}
+                className="btn btn-secondary inline-flex items-center"
+              >
+                <PlusIcon className="w-4 h-4 mr-2" />
+                Tạo kế hoạch mới
+              </button>
+            </div>
           </div>
+        </div>
+      ) : activeTab === 'ai-suggestions' ? (
+        <div className="space-y-6">
+          {!aiSuggestion ? (
+            <WorkoutSuggestionForm 
+              onSuggestionGenerated={(suggestion) => setAiSuggestion(suggestion)}
+            />
+          ) : (
+            <WorkoutSuggestionDisplay
+              suggestion={aiSuggestion}
+              onGenerateNew={() => setAiSuggestion(null)}
+            />
+          )}
         </div>
       ) : (
         <div className="max-w-2xl mx-auto">

@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   ArrowLeftIcon,
-  SaveIcon,
+  BookmarkIcon,
   PlusIcon,
   XMarkIcon,
   PhotoIcon,
@@ -445,7 +445,7 @@ const AssignmentCreate: React.FC = () => {
               </>
             ) : (
               <>
-                <SaveIcon className="h-5 w-5 mr-2" />
+                <BookmarkIcon className="h-5 w-5 mr-2" />
                 Tạo bài tập
               </>
             )}
