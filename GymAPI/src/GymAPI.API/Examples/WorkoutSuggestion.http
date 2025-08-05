@@ -1,0 +1,62 @@
+# Gemini Workout Suggestion API Examples
+# Make sure to set your Gemini API Key in appsettings.json before testing
+
+### Example 1: Male wanting to gain muscle with dumbbells
+POST {{GymAPI_HostAddress}}/api/schedule/suggest
+Content-Type: application/json
+
+{
+  "gender": "Male",
+  "age": 25,
+  "weight": 70,
+  "height": 175,
+  "goal": "Gain Muscle",
+  "workoutDaysPerWeek": 5,
+  "equipment": "Dumbbells, Resistance Bands",
+  "additionalNotes": "I want to focus on upper body strength"
+}
+
+### Example 2: Female wanting to lose fat with no equipment
+POST {{GymAPI_HostAddress}}/api/schedule/suggest
+Content-Type: application/json
+
+{
+  "gender": "Female",
+  "age": 30,
+  "weight": 65,
+  "height": 165,
+  "goal": "Lose Fat",
+  "workoutDaysPerWeek": 4,
+  "equipment": "No Equipment",
+  "additionalNotes": "I prefer bodyweight exercises and cardio"
+}
+
+### Example 3: Male wanting to maintain fitness with full gym equipment
+POST {{GymAPI_HostAddress}}/api/schedule/suggest
+Content-Type: application/json
+
+{
+  "gender": "Male",
+  "age": 35,
+  "weight": 80,
+  "height": 180,
+  "goal": "Maintain",
+  "workoutDaysPerWeek": 3,
+  "equipment": "Full Gym Access, Barbells, Dumbbells, Machines",
+  "additionalNotes": "I have limited time, need efficient workouts"
+}
+
+### Example 4: Testing with localhost
+POST https://localhost:7162/api/schedule/suggest
+Content-Type: application/json
+
+{
+  "gender": "Female",
+  "age": 28,
+  "weight": 60,
+  "height": 170,
+  "goal": "Gain Muscle",
+  "workoutDaysPerWeek": 4,
+  "equipment": "Dumbbells, Kettlebells",
+  "additionalNotes": "New to weight training, need beginner-friendly exercises"
+}

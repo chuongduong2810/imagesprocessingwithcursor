@@ -1,4 +1,5 @@
 using GymAPI.Application;
+using GymAPI.Application.Features.WorkoutSuggestions;
 using GymAPI.Infrastructure;
 using GymAPI.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
@@ -39,6 +40,17 @@ builder.Services.AddCors(options =>
 // Add Application and Infrastructure layers
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
+
+// Configure Gemini API
+builder.Services.Configure<GeminiConfig>(
+    builder.Configuration.GetSection(GeminiConfig.SectionName));
+
+// Add HttpClient for Gemini API
+builder.Services.AddHttpClient<IGeminiWorkoutSuggestionService, GeminiWorkoutSuggestionService>(client =>
+{
+    client.Timeout = TimeSpan.FromSeconds(30);
+    client.DefaultRequestHeaders.Add("User-Agent", "GymAPI/1.0");
+});
 
 var app = builder.Build();
 
